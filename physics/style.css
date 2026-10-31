@@ -14,3 +14,5 @@ html[data-theme=dark] body{background:#111522;color:#e4e5f2}html[data-theme=dark
 /* پیوند منبع در مثال‌ها و توضیح درس‌ها باید از متن قابل تشخیص باشد. */
 .content-card .example-box a,.content-card>p a{color:#6f69c4;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
 html[data-theme=dark] .content-card .example-box a,html[data-theme=dark] .content-card>p a{color:#c2bdff}
+/* در مثال‌های گام‌به‌گام، نمایش flex نباید ویژگی hidden را خنثی کند. */
+.step-list li[hidden]{display:none}
