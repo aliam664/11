@@ -16,6 +16,7 @@ html = html
   .replace(/<link rel="stylesheet" href="vendor\/katex\/katex.min.css">/, () => `<style>${katexCss}</style>`)
   .replace(/<link rel="stylesheet" href="css\/fonts.css">/, () => `<style>${fontsCss}</style>`)
   .replace(/<link rel="stylesheet" href="css\/style.css">/, () => `<style>${read('css/style.css')}</style>`)
+  .replace(/<link rel="stylesheet" href="css\/chapter.css">/, () => `<style>${read('css/chapter.css')}</style>`)
   .replace(/<script src="([^"]+)"><\/script>/g, (m, src) => `<script>${read(src).toString().replace(/<\/script>/g, '<\\/script>')}</script>`);
 // تصاویر assets/*.jpg را درون‌خطی می‌کنیم
 html = html.replace(/assets\/([a-z0-9_-]+)\.jpg/g, (m, n) => b64('assets/' + n + '.jpg', 'image/jpeg'));

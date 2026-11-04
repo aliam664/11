@@ -85,6 +85,7 @@
     const lessonItem = (l, title) => { const m = mastery(l); return item('#/lesson/' + l.id, l.icon, title || l.title, l.id, m > 0 ? `<span class="mp ${mcls(m)}">${m}٪</span>` : '', m >= 80); };
     nav.innerHTML =
       item('#/', '🏠', 'خانه', 'home') +
+      item('#/chapter', '✦', 'سه درس اول فصل یک', 'chapter') +
       window.UNITS.map(u => `<div class="nav-title">واحد ${u.id}: ${u.title}</div>` +
         u.ids.map(id => byId[id]).filter(Boolean).map(l => lessonItem(l)).join('') +
         item('#/assess/u' + u.id, '📝', `آزمون واحد ${u.id}`, 'assess-u' + u.id, assessBest('u' + u.id) ? `<span class="mp ${mcls(assessBest('u' + u.id))}">${assessBest('u' + u.id)}٪</span>` : '', assessBest('u' + u.id) >= 80)).join('') +
@@ -148,8 +149,10 @@
         <img class="hero-img" src="assets/hero.jpg" alt="دانش‌آموز در حال یادگیری معادله‌ی درجه دوم">
       </section>
 
+      <section class="chapter-promo"><div><small>مسیر تازه · حسابان یازدهم</small><h3>سه درس اول فصل یک، از مثال تا تسلط</h3><p>دنباله‌ها، درجه دوم، معادله‌های گویا و گنگ؛ با ۱۵ مسئلهٔ چندگامی و آزمون مستقل.</p></div><a class="chapter-primary" href="#/chapter">ورود به مسیر ←</a></section>
+
       <div class="stats-row">
-        <div class="stat"><b>${o}٪</b><span>تسلط کلی</span></div>
+        <div class="stat"><b>${o}٪</b><span>تسلط مسیر قبلی</span></div>
         <div class="stat"><b>${mastered}/${L.length}</b><span>درس مسلط‌شده</span></div>
         <div class="stat"><b>${due}</b><span>کارت مرور امروز</span></div>
         <div class="stat"><b>${passed}/4</b><span>آزمون قبول‌شده (۸۰٪+)</span></div>
@@ -191,6 +194,7 @@
     $('resetBtn').onclick = () => {
       if (!confirm('همه‌ی پیشرفت و نتیجه‌ها پاک شود؟')) return;
       ['stages', 'srs', 'assess'].forEach(k => { Object.keys(E.state[k]).forEach(x => delete E.state[k][x]); });
+      delete E.state.chapter;
       E.save(); buildNav(); home(); markActive('home');
     };
   }
@@ -585,7 +589,8 @@
     let id = 'home', m;
     if (keyHandler) { document.removeEventListener('keydown', keyHandler); keyHandler = null; }
     curStage = 'ex';
-    if ((m = h.match(/^#\/lesson\/(.+)$/))) { id = decodeURIComponent(m[1]); curNavId = id; lessonPage(id); }
+    if ((m = h.match(/^#\/chapter(?:\/(.*))?$/))) { id = 'chapter'; curNavId = id; window.ChapterUI.render(view, m[1] || ''); }
+    else if ((m = h.match(/^#\/lesson\/(.+)$/))) { id = decodeURIComponent(m[1]); curNavId = id; lessonPage(id); }
     else if ((m = h.match(/^#\/assess\/(.+)$/))) { id = 'assess-' + m[1]; curNavId = id; assessPage(m[1]); }
     else if (h === '#/review') { id = 'review'; curNavId = id; reviewPage(); }
     else if (h === '#/tools') { id = 'tools'; curNavId = id; toolsPage(); }
